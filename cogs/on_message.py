@@ -5,7 +5,6 @@ from discord.ext import commands
 
 from main import bot
 
-last_message = ""
 
 class On_message(commands.Cog):
     def __init__(self, bot):
@@ -14,8 +13,6 @@ class On_message(commands.Cog):
     # event
     @commands.Cog.listener()
     async def on_message(self, message):
-        global last_message
-
         if message.author.bot:
             return  # Ignore messages from bots
 
@@ -42,10 +39,6 @@ class On_message(commands.Cog):
                 return
         elif profanity.contains_profanity(message.content):
             await message.delete()
-            new_message = r.choice(greeting)
-            while new_message == last_message:  # Check if the new message is the same as the last one
-                new_message = r.choice(greeting)
-            last_message = new_message  # Update the last sent message
             await message.channel.send(r.choice(greeting))
 
         await bot.process_commands(message)
