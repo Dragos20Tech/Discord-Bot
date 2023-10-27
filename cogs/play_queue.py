@@ -84,7 +84,7 @@ class Play(commands.Cog):
                                               description="Picked a random song for you ;)",
                                               color=discord.Color.blue())
 
-                        embed.set_thumbnail(url="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8oyPoxKW1-pwxKsrsPCLY67Q6_zXS6eAl8g&usqp=CAU")
+                        embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/10097/10097473.png")
 
                         await ctx.send(embed=embed)
                         audio_file = random.choice(matching_files)
@@ -134,7 +134,7 @@ class Play(commands.Cog):
             embed = discord.Embed(title="Now playing : ",
                                   color=discord.Color.green())
             embed.add_field(name="", value=f"```{audio_file_name}```", inline=False)
-            embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/2424/2424869.png")
+            embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/6816/6816413.png")
 
             # Adding timestamp with the current date and time
             now = datetime.datetime.now()
@@ -160,6 +160,52 @@ class Play(commands.Cog):
             await ctx.send('Please specify an audio file to play.')
 
     @commands.command(pass_context=True)
+    async def skip(self, ctx):
+        guild_id = ctx.guild.id
+        if guild_id in queues and queues[guild_id]:
+            voice = ctx.guild.voice_client
+            if voice and voice.is_playing():
+                voice.stop()
+                embed = discord.Embed(
+                    title="Skipped Song",
+                    description="Skipped to the next song.",
+                    color=discord.Color.blue()
+                )
+                embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/556/556721.png")
+
+                # Adding timestamp with the current date and time
+                now = datetime.datetime.now()
+                embed.set_footer(text=f"Date : {now.strftime('%Y-%m-%d')}  ⬤  Time : {now.strftime('%H:%M %p')}")
+
+                await ctx.send(embed=embed)
+            else:
+                embed = discord.Embed(
+                    title="No Song Playing",
+                    description="No song is currently playing.",
+                    color=discord.Color.purple()
+                )
+                embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/7409/7409461.png") #OOPS
+
+                # Adding timestamp with the current date and time
+                now = datetime.datetime.now()
+                embed.set_footer(text=f"Date : {now.strftime('%Y-%m-%d')}  ⬤  Time : {now.strftime('%H:%M %p')}")
+
+                await ctx.send(embed=embed)
+        else:
+            embed = discord.Embed(
+                title="Empty Queue",
+                description="The queue is currently empty.",
+                color=discord.Color.purple()
+            )
+            embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/7409/7409461.png") #OOPS
+
+            # Adding timestamp with the current date and time
+            now = datetime.datetime.now()
+            embed.set_footer(text=f"Date : {now.strftime('%Y-%m-%d')}  ⬤  Time : {now.strftime('%H:%M %p')}")
+
+            await ctx.send(embed=embed)
+
+    @commands.command(pass_context=True)
     async def queue(self, ctx, *, arg):
         guild_id = ctx.guild.id  # Extracting the unique ID of the server where the command was invoked
 
@@ -179,7 +225,7 @@ class Play(commands.Cog):
                                       description="Queue has been shuffled.",
                                       color=discord.Color.blue())
 
-                embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/3168/3168278.png")
+                embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/7456/7456650.png")
 
                 # Adding timestamp with the current date and time
                 now = datetime.datetime.now()
@@ -282,7 +328,7 @@ class Play(commands.Cog):
                                               description="Picked a random song for you ;)",
                                               color=discord.Color.blue())
                         embed.set_thumbnail(
-                            url="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8oyPoxKW1-pwxKsrsPCLY67Q6_zXS6eAl8g&usqp=CAU")
+                            url="https://cdn-icons-png.flaticon.com/256/10097/10097473.png")
 
                         await ctx.send(embed=embed)
                         audio_file = random.choice(matching_files)
@@ -340,7 +386,7 @@ class Play(commands.Cog):
 
             embed.add_field(name="", value=f"```{audio_file_name}```", inline=False)
 
-            embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/10396/10396891.png")
+            embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/5978/5978998.png")
 
             # Adding timestamp with the current date and time
             now = datetime.datetime.now()
