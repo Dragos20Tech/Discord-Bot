@@ -215,9 +215,40 @@ class Play(commands.Cog):
 
         # You got the idea ;)
 
+        # REMOVE LAST SONG
+        if arg == 'remove last':
+            if guild_id in queues and queues[guild_id]:
+                removed_song = queues[guild_id].pop()
+                embed = discord.Embed(
+                    title="Removed from Queue",
+                    description=f"Removed the last song from the queue:\n```{removed_song[1]}```",
+                    color=discord.Color.dark_blue()
+                )
+                embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/5644/5644534.png")  # Remove icon
+
+                # Adding timestamp with the current date and time
+                now = datetime.datetime.now()
+                embed.set_footer(text=f"Date : {now.strftime('%Y-%m-%d')}  ⬤  Time : {now.strftime('%H:%M %p')}")
+
+                await ctx.send(embed=embed)
+                return
+            else:
+                embed = discord.Embed(
+                    title="Empty Queue",
+                    description="The queue is currently empty.",
+                    color=discord.Color.purple()
+                )
+                embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/7409/7409461.png")  # OOPS
+
+                # Adding timestamp with the current date and time
+                now = datetime.datetime.now()
+                embed.set_footer(text=f"Date : {now.strftime('%Y-%m-d')}  ⬤  Time : {now.strftime('%H:%M %p')}")
+
+                await ctx.send(embed=embed)
+                return
+
         # CLEAR
         if arg == 'clear':
-            guild_id = ctx.guild.id
             if guild_id in queues and queues[guild_id]:
                 queues[guild_id] = []
                 embed = discord.Embed(
