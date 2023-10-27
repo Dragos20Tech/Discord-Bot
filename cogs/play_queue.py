@@ -215,6 +215,39 @@ class Play(commands.Cog):
 
         # You got the idea ;)
 
+        # CLEAR
+        if arg == 'clear':
+            guild_id = ctx.guild.id
+            if guild_id in queues and queues[guild_id]:
+                queues[guild_id] = []
+                embed = discord.Embed(
+                    title="Queue Cleared",
+                    description="The queue has been cleared.",
+                    color=discord.Color.blue()
+                )
+                embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/4340/4340849.png")  # Check mark
+
+                # Adding timestamp with the current date and time
+                now = datetime.datetime.now()
+                embed.set_footer(text=f"Date : {now.strftime('%Y-%m-%d')}  ⬤  Time : {now.strftime('%H:%M %p')}")
+
+                await ctx.send(embed=embed)
+                return
+            else:
+                embed = discord.Embed(
+                    title="Empty Queue",
+                    description="The queue is already empty.",
+                    color=discord.Color.purple()
+                )
+                embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/7409/7409461.png")  # OOPS
+
+                # Adding timestamp with the current date and time
+                now = datetime.datetime.now()
+                embed.set_footer(text=f"Date : {now.strftime('%Y-%m-%d')}  ⬤  Time : {now.strftime('%H:%M %p')}")
+
+                await ctx.send(embed=embed)
+                return
+
         # SHUFFLE
         if arg == 'shuffle':
             # Checks if a particular server (identified by guild_id) has an existing queue
@@ -234,7 +267,18 @@ class Play(commands.Cog):
                 await ctx.send(embed = embed)
                 return
             else:
-                await ctx.send("The queue is currently empty.")
+                embed = discord.Embed(
+                    title="Empty Queue",
+                    description="The queue is already empty.",
+                    color=discord.Color.purple()
+                )
+                embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/7409/7409461.png")  # OOPS
+
+                # Adding timestamp with the current date and time
+                now = datetime.datetime.now()
+                embed.set_footer(text=f"Date : {now.strftime('%Y-%m-%d')}  ⬤  Time : {now.strftime('%H:%M %p')}")
+
+                await ctx.send(embed=embed)
                 return
         # LIST
         if arg == 'list':
@@ -261,7 +305,18 @@ class Play(commands.Cog):
                 await ctx.send(embed=embed)
                 return
             else:
-                await ctx.send("The queue is currently empty.")
+                embed = discord.Embed(
+                    title="Empty Queue",
+                    description="The queue is already empty.",
+                    color=discord.Color.purple()
+                )
+                embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/7409/7409461.png")  # OOPS
+
+                # Adding timestamp with the current date and time
+                now = datetime.datetime.now()
+                embed.set_footer(text=f"Date : {now.strftime('%Y-%m-%d')}  ⬤  Time : {now.strftime('%H:%M %p')}")
+
+                await ctx.send(embed=embed)
                 return
 
         # QUEUE SONGS / AUDIO FILES
