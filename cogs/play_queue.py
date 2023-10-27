@@ -11,13 +11,15 @@ import datetime
 SUPPORTED_FORMATS = ['.mp3', '.wav', '.ogg', '.aac', '.flac', '.m4a', '.aiff', '.wma']
 
 queues = {}
-
+audio_file_name = None
 
 def check_queue(ctx, id):
+    global audio_file_name
     if queues.get(id) and len(queues[id]) > 0:
         voice = ctx.guild.voice_client
         if voice and not voice.is_playing():
             source, audio_file = queues[id].pop(0)
+            audio_file_name = os.path.splitext(audio_file)[0]
             voice.play(source, after=lambda x: check_queue(ctx, id))
     else:
         queues.pop(id, None)
@@ -30,6 +32,8 @@ class Play(commands.Cog):
     @commands.command(pass_context=True)
     async def play(self, ctx, *, audio):
         voice = ctx.author.voice
+        global audio_file_name
+
         if voice is None:
             await ctx.send('You need to be in a voice channel to use this command.')
             return
@@ -198,6 +202,39 @@ class Play(commands.Cog):
                 color=discord.Color.purple()
             )
             embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/7409/7409461.png") #OOPS
+
+            # Adding timestamp with the current date and time
+            now = datetime.datetime.now()
+            embed.set_footer(text=f"Date : {now.strftime('%Y-%m-%d')}  ⬤  Time : {now.strftime('%H:%M %p')}")
+
+            await ctx.send(embed=embed)
+
+
+    @commands.command(pass_context=True)
+    async def song(self, ctx):
+        global audio_file_name
+
+        if ctx.guild.voice_client.is_playing():
+            current_song = audio_file_name
+            embed = discord.Embed(
+                title="Current Song",
+                description=f"The current song playing is: ```{current_song}```",
+                color=discord.Color.gold()
+            )
+            embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/5802/5802191.png")
+
+            # Adding timestamp with the current date and time
+            now = datetime.datetime.now()
+            embed.set_footer(text=f"Date : {now.strftime('%Y-%m-%d')}  ⬤  Time : {now.strftime('%H:%M %p')}")
+
+            await ctx.send(embed=embed)
+        else:
+            embed = discord.Embed(
+                title="No Song Playing",
+                description="There is currently no song playing.",
+                color=discord.Color.purple()
+            )
+            embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/7409/7409461.png")  # OOPS
 
             # Adding timestamp with the current date and time
             now = datetime.datetime.now()
