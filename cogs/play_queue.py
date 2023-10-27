@@ -57,7 +57,7 @@ class Play(commands.Cog):
                     options_text += f"```{i + 1}. {song}```\n"
 
                 # Adding the time limit message below the options
-                options_text += "\nYou have 30 seconds to pick a song!"
+                options_text += "\n**You have 30 seconds to pick a song!**"
 
                 embed = discord.Embed(title="Choose a song", description=options_text, color=discord.Color.dark_orange())
                 embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/974/974783.png")
@@ -83,7 +83,9 @@ class Play(commands.Cog):
                         embed = discord.Embed(title="Random Song",
                                               description="Picked a random song for you ;)",
                                               color=discord.Color.blue())
+
                         embed.set_thumbnail(url="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8oyPoxKW1-pwxKsrsPCLY67Q6_zXS6eAl8g&usqp=CAU")
+
                         await ctx.send(embed=embed)
                         audio_file = random.choice(matching_files)
                 except asyncio.TimeoutError:
@@ -93,9 +95,11 @@ class Play(commands.Cog):
 
                                           )
                     embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/594/594598.png") # Red X
+
                     # Adding timestamp with the current date and time
                     now = datetime.datetime.now()
                     embed.set_footer(text=f"Date : {now.strftime('%Y-%m-%d')}  ⬤  Time : {now.strftime('%H:%M %p')}")
+
                     await ctx.send(embed=embed)
                     return
                 except ValueError:
@@ -103,9 +107,11 @@ class Play(commands.Cog):
                                           description="Invalid choice. Aborting...",
                                           color=discord.Color.red())
                     embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/594/594598.png") # Red X
+
                     # Adding timestamp with the current date and time
                     now = datetime.datetime.now()
                     embed.set_footer(text=f"Date : {now.strftime('%Y-%m-%d')}  ⬤  Time : {now.strftime('%H:%M %p')}")
+
                     await ctx.send(embed=embed)
                     return
             else:
@@ -154,11 +160,42 @@ class Play(commands.Cog):
             await ctx.send('Please specify an audio file to play.')
 
     @commands.command(pass_context=True)
-    async def queue(self, ctx, *, audio):
-        if audio == 'list':
-            guild_id = ctx.guild.id
+    async def queue(self, ctx, *, arg):
+        guild_id = ctx.guild.id  # Extracting the unique ID of the server where the command was invoked
+
+        # LK4K's Community server has the ID : 858636428107972618
+        # The Odin Project server has the ID : 505093832157691914
+        # TPN Labs server has the ID : 333685781862416385
+
+        # You got the idea ;)
+
+        # SHUFFLE
+        if arg == 'shuffle':
+            # Checks if a particular server (identified by guild_id) has an existing queue
+            # (found in the queues dictionary) and if that queue is not empty.
             if guild_id in queues and queues[guild_id]:
-                embed = discord.Embed(title="Current Queue", description="\u200b", color=discord.Color.blue())
+                random.shuffle(queues[guild_id])
+                embed = discord.Embed(title="Queue Shuffle",
+                                      description="Queue has been shuffled.",
+                                      color=discord.Color.blue())
+
+                embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/3168/3168278.png")
+
+                # Adding timestamp with the current date and time
+                now = datetime.datetime.now()
+                embed.set_footer(text=f"Date : {now.strftime('%Y-%m-%d')}  ⬤  Time : {now.strftime('%H:%M %p')}")
+
+                await ctx.send(embed = embed)
+                return
+            else:
+                await ctx.send("The queue is currently empty.")
+                return
+        # LIST
+        if arg == 'list':
+            if guild_id in queues and queues[guild_id]:
+                embed = discord.Embed(title="Current Queue",
+                                      description="\u200b",
+                                      color=discord.Color.blue())
                 # "\u200b" means that I'm adding a space between the title and the fields.
 
                 for index, queue_item in enumerate(queues[guild_id]):
@@ -170,6 +207,7 @@ class Play(commands.Cog):
                     embed.add_field(name=name, value=value, inline=False)
 
                 embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/2735/2735401.png")
+
                 # Adding timestamp with the current date and time
                 now = datetime.datetime.now()
                 embed.set_footer(text=f"Date : {now.strftime('%Y-%m-%d')}  ⬤  Time : {now.strftime('%H:%M %p')}")
@@ -180,6 +218,7 @@ class Play(commands.Cog):
                 await ctx.send("The queue is currently empty.")
                 return
 
+        # QUEUE SONGS / AUDIO FILES
         voice = ctx.author.voice
         if not voice or not voice.channel:
             embed = discord.Embed(title="Oops",
@@ -191,7 +230,6 @@ class Play(commands.Cog):
             now = datetime.datetime.now()
             embed.set_footer(text=f"Date : {now.strftime('%Y-%m-%d')}  ⬤  Time : {now.strftime('%H:%M %p')}")
 
-
             await ctx.send(embed = embed)
             return
 
@@ -201,7 +239,7 @@ class Play(commands.Cog):
             matching_files = []
 
             for audio_file in audio_files:
-                if audio.lower() in audio_file.lower():
+                if arg.lower() in audio_file.lower():
                     matching_files.append(audio_file)
 
             # print(matching_files)
@@ -216,7 +254,7 @@ class Play(commands.Cog):
                     options_text += f"```{i + 1}. {song}```\n"
 
                 # Adding the time limit message below the options
-                options_text += "\nYou have 30 seconds to pick a song!"
+                options_text += "\n**You have 30 seconds to pick a song!**"
 
                 embed = discord.Embed(title="Choose a song", description=options_text,
                                       color=discord.Color.dark_orange())
@@ -245,28 +283,34 @@ class Play(commands.Cog):
                                               color=discord.Color.blue())
                         embed.set_thumbnail(
                             url="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8oyPoxKW1-pwxKsrsPCLY67Q6_zXS6eAl8g&usqp=CAU")
+
                         await ctx.send(embed=embed)
                         audio_file = random.choice(matching_files)
                 except asyncio.TimeoutError:
                     embed = discord.Embed(title="Timeout Error",
                                           description="Response timed out. Aborting...",
                                           color=discord.Color.red()
-
                                           )
+
                     embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/594/594598.png")  # Red X
+
                     # Adding timestamp with the current date and time
                     now = datetime.datetime.now()
                     embed.set_footer(text=f"Date : {now.strftime('%Y-%m-%d')}  ⬤  Time : {now.strftime('%H:%M %p')}")
+
                     await ctx.send(embed=embed)
                     return
                 except ValueError:
                     embed = discord.Embed(title="Value Error",
                                           description="Invalid choice. Aborting...",
                                           color=discord.Color.red())
+
                     embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/594/594598.png")  # Red X
+
                     # Adding timestamp with the current date and time
                     now = datetime.datetime.now()
                     embed.set_footer(text=f"Date : {now.strftime('%Y-%m-%d')}  ⬤  Time : {now.strftime('%H:%M %p')}")
+
                     await ctx.send(embed=embed)
                     return
             else:
@@ -276,14 +320,6 @@ class Play(commands.Cog):
             audio_file_name = os.path.splitext(audio_file)[0]
 
             source = FFmpegPCMAudio(os.path.join('./Songs', audio_file))
-
-            guild_id = ctx.guild.id  # extracting the unique ID of the server where the command was invoked
-
-            # LK4K's Community server has the ID : 858636428107972618
-            # The Odin Project server has the ID : 505093832157691914
-            # TPN Labs server has the ID : 333685781862416385
-
-            # You got the idea ;)
 
             if guild_id in queues:
                 if len(queues[guild_id]) >= 7:
@@ -301,8 +337,11 @@ class Play(commands.Cog):
 
             embed = discord.Embed(title="Added to Queue : ",
                                   color=discord.Color.green())
+
             embed.add_field(name="", value=f"```{audio_file_name}```", inline=False)
+
             embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/10396/10396891.png")
+
             # Adding timestamp with the current date and time
             now = datetime.datetime.now()
             embed.set_footer(text=f"Date : {now.strftime('%Y-%m-%d')}  ⬤  Time : {now.strftime('%H:%M %p')}")
@@ -316,9 +355,11 @@ class Play(commands.Cog):
                 color=discord.Color.red()  # You can set the color as desired
             )
             embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/594/594598.png")  # Red X
+
             # Adding timestamp with the current date and time
             now = datetime.datetime.now()
             embed.set_footer(text=f"Date : {now.strftime('%Y-%m-%d')}  ⬤  Time : {now.strftime('%H:%M %p')}")
+
             await ctx.send(embed=embed)
 
 
