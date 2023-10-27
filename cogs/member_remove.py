@@ -13,12 +13,15 @@ class member_remove(commands.Cog):
         # Get the server or guild where the member has joined
         server = member.guild
 
+        # Initializing the variable with the first text-channel of the server
         text_channel = server.text_channels[0]
 
+        # Searches for "general" text-channel
         for channel in server.text_channels:
             if channel.name == 'general':
                 text_channel = channel
                 break
+        # If "general" text-channel not found then it will display the message in the first text-channel of the server
 
         await text_channel.send(f"Goodbye {member.display_name} !")
 

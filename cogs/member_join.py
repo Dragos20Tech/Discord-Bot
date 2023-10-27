@@ -13,6 +13,7 @@ class member_join(commands.Cog):
         # Get the server or guild where the member has joined
         server = member.guild
 
+        # Initializing the variable with the first text-channel of the server
         text_channel = server.text_channels[0]
 
         # # ----------------------------- DEBUGGING PURPOSES -----------------------------
@@ -23,6 +24,7 @@ class member_join(commands.Cog):
         # print(' ')
         # # ----------------------------- DEBUGGING PURPOSES -----------------------------
 
+        # Searches for "general" text-channel
         for channel in server.text_channels:
             if channel.name == 'general':
                 text_channel = channel
@@ -30,8 +32,6 @@ class member_join(commands.Cog):
 
         if text_channel is not None:
             await text_channel.send(f"Hello {member.display_name}!  Welcome to my discord server!")
-            # 'rj' is a prefix to use in order to call the right variable/function from the other file
-            # Hold CTRL + click on 'rj' to go to rapidAPI_Joker.py
 
 
 async def setup(bot):
