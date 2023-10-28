@@ -562,6 +562,53 @@ class Play(commands.Cog):
 
             await ctx.send(embed=embed)
 
+    @commands.command(pass_context=True)
+    async def pause(self, ctx):
+        voice = discord.utils.get(self.bot.voice_clients,
+                                  guild=ctx.guild)  # this line of code is like searching through
+        # all the voice clients your bot is connected to and picking out the one
+        # that's associated with the server (guild) [parameter] where the command
+        # was used.
+
+        # ----------------------------- DEBUGGING PURPOSES -----------------------------
+        # print("--------------------------------")
+        # print(f'Type : {type(voice)}')
+        # print(f'{voice}')
+        # print(' ')
+        # print(f'List : {bot.voice_clients}')
+        # print(f'Type : {type(ctx.guild)}')
+        # print(ctx.guild)
+        # print("--------------------------------")
+        # ----------------------------- DEBUGGING PURPOSES -----------------------------
+        if voice.is_playing():
+            voice.pause()
+        else:
+            await ctx.send('There\'s no audio playing!')
+
+    @commands.command(pass_context=True)
+    async def resume(self, ctx):
+        voice = discord.utils.get(self.bot.voice_clients, guild=ctx.guild)
+        if voice.is_paused():
+            voice.resume()
+        else:
+            await ctx.send('No audio paused!')
+
+    @commands.command(pass_context=True)
+    async def stop(self, ctx):
+        voice_client = ctx.guild.voice_client
+
+        # Clear the queue list when the stop command is called
+        if ctx.guild.id in queues:
+            queues[ctx.guild.id] = []
+
+        # Check if the voice client is playing and stop the current song
+        if voice_client.is_playing():
+            voice_client.stop()
+
+        # Disconnect from the voice channel
+        await voice_client.disconnect(force=True)
+
+        await ctx.send("Left the voice channel. Queue has been cleared.")
 
 
 async def setup(bot):

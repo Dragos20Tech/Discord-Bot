@@ -6,7 +6,7 @@ from discord.ext import commands
 from main import bot
 
 
-class On_message(commands.Cog):
+class Word(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
@@ -45,4 +45,4 @@ class On_message(commands.Cog):
 
 
 async def setup(Bot):
-    await Bot.add_cog(On_message(Bot))
+    await Bot.add_cog(Word(Bot))

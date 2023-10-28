@@ -3,20 +3,9 @@ import random as r
 import re
 
 
-class On_reaction(commands.Cog):
+class Reaction(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-
-    # event
-    # @commands.Cog.listener()
-    # async def on_reaction_add(self, reaction, user):
-    #     channel = reaction.message.channel
-    #     await channel.send(user.name + " added : " + reaction.emoji)
-
-    # @commands.Cog.listener()
-    # async def on_reaction_remove(self, reaction, user):
-    #     channel = reaction.message.channel
-    #     await channel.send(user.name + " removed : " + reaction.emoji)
 
     @commands.Cog.listener()
     async def on_message(self, message):
@@ -44,7 +33,7 @@ class On_reaction(commands.Cog):
 
 
 async def setup(Bot):
-    await Bot.add_cog(On_reaction(Bot))
+    await Bot.add_cog(Reaction(Bot))
 
 
 """
