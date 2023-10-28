@@ -75,10 +75,13 @@ class Play(commands.Cog):
 
                 await ctx.send(embed=embed)
 
+                # Checking whether the author of the message is the same as the author of the initial command
+                # and if the message was sent in the same channel as the initial command.
                 def check(m):
                     return m.author == ctx.author and m.channel == ctx.channel
 
                 try:
+                    # The 'wait_for' function is a part of discord.py library that waits for a specific event to occur.
                     response = await self.bot.wait_for('message', check=check, timeout=30)
                     choice = int(response.content)
                     if 1 <= choice <= len(matching_files):  # interval : 1 <= x <= y , where y >= x always
