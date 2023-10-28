@@ -255,13 +255,41 @@ class Play(commands.Cog):
 
         # You got the idea ;)
 
-        # REMOVE LAST SONG
-        if arg == 'remove last':
-            if guild_id in queues and queues[guild_id]:
-                removed_song = queues[guild_id].pop()
+        # REMOVE SONG BY INDEX OR 'first,second,third'/'last'
+        if arg.startswith('remove '):
+            index_text = arg.split(' ')[-1]
+
+            if index_text == 'last':
+                index = len(queues[guild_id]) - 1
+            elif index_text == 'first' or '1st':
+                index = 0
+            elif index_text == 'second' or '2nd':
+                index = 1
+            elif index_text == 'third' or '3rd':
+                index = 2
+            else:
+                try:
+                    index = int(index_text) - 1
+                except ValueError:
+                    embed = discord.Embed(
+                        title="Invalid Index",
+                        description="Please provide a valid numerical index or use 'first, second, third' or 'last'.",
+                        color=discord.Color.red()
+                    )
+                    embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/594/594598.png")  # Red X
+
+                    # Adding timestamp with the current date and time
+                    now = datetime.datetime.now()
+                    embed.set_footer(text=f"Date : {now.strftime('%Y-%m-%d')}  ⬤  Time : {now.strftime('%H:%M %p')}")
+
+                    await ctx.send(embed=embed)
+                    return
+
+            if 0 <= index < len(queues[guild_id]):
+                removed_song = queues[guild_id].pop(index)
                 embed = discord.Embed(
                     title="Removed from Queue",
-                    description=f"Removed the last song from the queue:\n```{removed_song[1]}```",
+                    description=f"Removed **Song {index + 1}** from the queue:\n```{removed_song[1]}```",
                     color=discord.Color.dark_blue()
                 )
                 embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/5644/5644534.png")  # Remove icon
@@ -274,15 +302,15 @@ class Play(commands.Cog):
                 return
             else:
                 embed = discord.Embed(
-                    title="Empty Queue",
-                    description="The queue is currently empty.",
-                    color=discord.Color.purple()
+                    title="Invalid Index",
+                    description="Please provide a valid index within the range of the queue.",
+                    color=discord.Color.red()
                 )
-                embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/7409/7409461.png")  # OOPS
+                embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/594/594598.png")  # Red X
 
                 # Adding timestamp with the current date and time
                 now = datetime.datetime.now()
-                embed.set_footer(text=f"Date : {now.strftime('%Y-%m-d')}  ⬤  Time : {now.strftime('%H:%M %p')}")
+                embed.set_footer(text=f"Date : {now.strftime('%Y-%m-%d')}  ⬤  Time : {now.strftime('%H:%M %p')}")
 
                 await ctx.send(embed=embed)
                 return
