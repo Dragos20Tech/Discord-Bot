@@ -167,20 +167,15 @@ class Play(commands.Cog):
             await ctx.send('Please specify an audio file to play.')
 
     @commands.command(pass_context=True)
-    async def skip(self, ctx, *, number: str = '1'):
+    async def skip(self, ctx):
         guild_id = ctx.guild.id
-        if not number.isdigit():
-            number = '1'
-        number = int(number)
         if guild_id in queues and queues[guild_id]:
             voice = ctx.guild.voice_client
             if voice and voice.is_playing():
-                for _ in range(min(number, len(queues[guild_id]))):
-                    voice.stop()
-                    queues[guild_id].pop(0)
+                voice.stop()
                 embed = discord.Embed(
                     title="Skipped Song",
-                    description=f"Skipped {number} song(s) to the next song.",
+                    description="Skipped to the next song.",
                     color=discord.Color.blue()
                 )
                 embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/556/556721.png")
