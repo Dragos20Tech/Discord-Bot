@@ -47,7 +47,7 @@ async def load_extensions():
     for filename in os.listdir("./cogs"):
         if filename.endswith(".py"):
             try:
-                await bot.load_extension(f"cogs.{filename[:-3]}")
+                await bot.load_extension(f"cogs.{filename[:-3]}") # loads extension without '.py' format
                 # print(f"Loaded extension: {filename}")
             except Exception as e:
                 print(f"Failed to load extension {filename}: {e}")
@@ -61,12 +61,12 @@ async def main():
 
 if __name__ == "__main__":
     try:
-        loop = asyncio.get_event_loop()
-        task = loop.create_task(main())
-        loop.run_until_complete(task)
+        loop = asyncio.get_event_loop()  # This line initializes an asyncio event loop
+        task = loop.create_task(main())  # This line creates an asynchronous task using the event loop
+        loop.run_until_complete(task)  # This line runs the event loop until the task is complete
     except KeyboardInterrupt:
         print("Disconnecting from the server and channel...")
-        if bot.voice_clients:
-            for vc in bot.voice_clients:
-                loop.run_until_complete(vc.disconnect())
+        if bot.voice_clients:  # This line checks if there are any voice clients connected
+            for vc in bot.voice_clients:  # This initiates a loop that iterates over each voice client
+                loop.run_until_complete(vc.disconnect())  # This line runs the event loop until the voice client disconnects
         print("Exiting...")
