@@ -167,23 +167,25 @@ class Play(commands.Cog):
             await ctx.send('Please specify an audio file to play.')
 
     @commands.command(pass_context=True)
-    async def skip(self, ctx):
+    async def skip(self, ctx, *, number: str = '1'):
         guild_id = ctx.guild.id
+        if not number.isdigit():
+            number = '1'
+        number = int(number)
         if guild_id in queues and queues[guild_id]:
             voice = ctx.guild.voice_client
             if voice and voice.is_playing():
-                voice.stop()
+                for _ in range(min(number, len(queues[guild_id]))):
+                    voice.stop()
+                    queues[guild_id].pop(0)
                 embed = discord.Embed(
                     title="Skipped Song",
-                    description="Skipped to the next song.",
+                    description=f"Skipped {number} song(s) to the next song.",
                     color=discord.Color.blue()
                 )
                 embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/556/556721.png")
-
-                # Adding timestamp with the current date and time
                 now = datetime.datetime.now()
                 embed.set_footer(text=f"Date : {now.strftime('%Y-%m-%d')}  ⬤  Time : {now.strftime('%H:%M %p')}")
-
                 await ctx.send(embed=embed)
             else:
                 embed = discord.Embed(
@@ -191,12 +193,9 @@ class Play(commands.Cog):
                     description="No song is currently playing.",
                     color=discord.Color.purple()
                 )
-                embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/7409/7409461.png") #OOPS
-
-                # Adding timestamp with the current date and time
+                embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/7409/7409461.png")
                 now = datetime.datetime.now()
                 embed.set_footer(text=f"Date : {now.strftime('%Y-%m-%d')}  ⬤  Time : {now.strftime('%H:%M %p')}")
-
                 await ctx.send(embed=embed)
         else:
             embed = discord.Embed(
@@ -204,14 +203,10 @@ class Play(commands.Cog):
                 description="The queue is currently empty.",
                 color=discord.Color.purple()
             )
-            embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/7409/7409461.png") #OOPS
-
-            # Adding timestamp with the current date and time
+            embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/7409/7409461.png")
             now = datetime.datetime.now()
             embed.set_footer(text=f"Date : {now.strftime('%Y-%m-%d')}  ⬤  Time : {now.strftime('%H:%M %p')}")
-
             await ctx.send(embed=embed)
-
 
     @commands.command(pass_context=True)
     async def song(self, ctx):
