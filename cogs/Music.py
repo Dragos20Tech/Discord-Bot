@@ -251,11 +251,11 @@ class Play(commands.Cog):
 
             if index_text == 'last':
                 index = len(queues[guild_id]) - 1
-            elif index_text == 'first' or '1st':
+            elif index_text == 'first' or index_text == '1st':
                 index = 0
-            elif index_text == 'second' or '2nd':
+            elif index_text == 'second' or index_text == '2nd':
                 index = 1
-            elif index_text == 'third' or '3rd':
+            elif index_text == 'third' or index_text == '3rd':
                 index = 2
             else:
                 try:
