@@ -23,9 +23,7 @@ Events :
     
 ## Demo
 
-
-
-
+[<img src="https://github.com/Dragos20Tech/Discord-Bot/assets/79509739/76830615-a7ad-4d73-959a-2fbb67a30912">](https://discord.com/api/oauth2/authorize?client_id=1161229265308749957&permissions=8&scope=bot)
 
 ## Packages
 	* `pip install discord.py`
