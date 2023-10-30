@@ -31,20 +31,22 @@ class Play(commands.Cog):
 
     @commands.command(pass_context=True)
     async def play(self, ctx, *, audio):
-        voice = ctx.author.voice
-        global audio_file_name
+        voice = ctx.author.voice # Var to check whether the author of the command is currently in a voice channel
+        global audio_file_name # Needed for the 'song' command
 
         if voice is None:
             await ctx.send('You need to be in a voice channel to use this command.')
             return
 
         try:
-            voice_client = ctx.guild.voice_client
+            # Check whether the bot is already connected to a voice channel in the server (guild)
+            voice_client = ctx.guild.voice_client # None -> Offline / not None -> Online
             audio_files = [f for f in os.listdir('./Songs') if any(f.endswith(ext) for ext in SUPPORTED_FORMATS)]
             # print(audio_files)
             matching_files = []
 
             for audio_file in audio_files:
+                # print(audio_file)
                 if audio.lower() in audio_file.lower():
                     matching_files.append(audio_file)
 
@@ -599,6 +601,22 @@ class Play(commands.Cog):
         await voice_client.disconnect(force=True)
 
         await ctx.send("Left the voice channel. Queue has been cleared.")
+
+
+    @commands.Cog.listener()
+    async def on_voice_state_update(self, ctx, before, after):
+        voice_state = ctx.guild.voice_client
+
+        # Checking if the bot is connected to a channel and if there is only 1 member connected to it (the bot itself)
+        if voice_state is not None and len(voice_state.channel.members) == 1:
+            # Clear the queue list before the bot automatically disconnects
+            if ctx.guild.id in queues:
+                queues[ctx.guild.id] = []
+            # Checking if the song is still playing
+            if voice_state.is_playing():
+                voice_state.stop()
+            await voice_state.disconnect(force=True)
+
 
 
 async def setup(bot):
