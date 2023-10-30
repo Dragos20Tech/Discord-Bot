@@ -1,2 +1,4 @@
 apikeys.py
 Virtual_Env/
+__pycache__/
+.idea/
