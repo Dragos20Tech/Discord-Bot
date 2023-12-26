@@ -1,6 +1,16 @@
+## Table Of Contents
+
+* [Features](#features)
+  * [Commands](#commands)
+  * [Events](#events)
+* [Demo](#demo)
+* [Packages](#packages)
+  * [Packages Description](#packages-description)
+* [Ideas for improvement](#ideas-for-improvement)
+
 ## Features 
 
-Commands :
+### Commands 
 * Effortlessly handle "disruptive" members on your server using the simple `kick` and `ban` features for effective moderation control. 
 * For the previously mentioned commands, you may optionally include a ***reason*** for why the user was kicked or banned from the server. 
 
@@ -16,7 +26,7 @@ Commands :
 	  
 * Quickly find songs with minimal information, such as the ***name of the artist*** or a ***keyword*** in the song title.
 	  
-Events :
+### Events 
   * Sets a welcoming tone in your server with automatic member greetings from the bot upon arrival and departure, offering a friendly atmosphere.
   * Identifies whether there are any users in the voice channel. If no users are detected, the bot will disconnect automatically and clear out the queue.
   * Identifies any profanity in user messages and remove them. To "educate" users on our policy against swearing, a replacement message will be sent.
@@ -30,6 +40,14 @@ Events :
 	 pip install PyNaCl
 	 pip install ffmpeg
 	 pip install better-profanity
+### Packages Description
+* discord.py is a Python library that provides an interface for interacting with the ***Discord API***. It allows developers to create Discord bots and applications, enabling communication and automation within the Discord platform.
+  
+* PyNaCl is a Python binding to the Networking and Cryptography (NaCl) library. It provides a simple interface for performing cryptographic operations, such as encryption and decryption, and is commonly used for ***secure communication*** in Python applications.
+  
+* FFmpeg is a powerful multimedia processing tool that can be used to convert, stream, and manipulate audio and video files. In Python, the ffmpeg package is often used to interact with the FFmpeg library, allowing developers to ***integrate multimedia capabilities*** into their applications.
+  
+* better-profanity is a Python library designed to filter and moderate profanity in text. It provides a straightforward way to ***identify and replace offensive language***, making it useful for applications where content moderation is necessary, such as chatbots or community forums.
   
 ## Ideas for improvement
 
