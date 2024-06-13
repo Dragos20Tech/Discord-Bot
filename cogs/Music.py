@@ -6,7 +6,6 @@ from discord.ext import commands
 import random
 import datetime
 
-
 # Modify the supported audio file formats here
 SUPPORTED_FORMATS = ['.mp3', '.wav', '.ogg', '.aac', '.flac', '.m4a', '.aiff', '.wma']
 
@@ -31,8 +30,8 @@ class Play(commands.Cog):
 
     @commands.command(pass_context=True)
     async def play(self, ctx, *, audio):
-        voice = ctx.author.voice # Var to check whether the author of the command is currently in a voice channel
-        global audio_file_name # Needed for the 'song' command
+        voice = ctx.author.voice  # Var to check whether the author of the command is currently in a voice channel
+        global audio_file_name  # Needed for the 'song' command
 
         if voice is None:
             await ctx.send('You need to be in a voice channel to use this command.')
@@ -40,7 +39,7 @@ class Play(commands.Cog):
 
         try:
             # Check whether the bot is already connected to a voice channel in the server (guild)
-            voice_client = ctx.guild.voice_client # None -> Offline / not None -> Online
+            voice_client = ctx.guild.voice_client  # None -> Offline / not None -> Online
             audio_files = [f for f in os.listdir('./Songs') if any(f.endswith(ext) for ext in SUPPORTED_FORMATS)]
             # print(audio_files)
             matching_files = []
@@ -65,7 +64,8 @@ class Play(commands.Cog):
                 # Adding the time limit message below the options
                 options_text += "\n**You have 30 seconds to pick a song!**"
 
-                embed = discord.Embed(title="Choose a song", description=options_text, color=discord.Color.dark_orange())
+                embed = discord.Embed(title="Choose a song", description=options_text,
+                                      color=discord.Color.dark_orange())
                 embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/974/974783.png")
 
                 # Empty field to create space
@@ -103,7 +103,7 @@ class Play(commands.Cog):
                                           color=discord.Color.red()
 
                                           )
-                    embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/594/594598.png") # Red X
+                    embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/594/594598.png")  # Red X
 
                     # Adding timestamp with the current date and time
                     now = datetime.datetime.now()
@@ -115,7 +115,7 @@ class Play(commands.Cog):
                     embed = discord.Embed(title="Value Error",
                                           description="Invalid choice. Aborting...",
                                           color=discord.Color.red())
-                    embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/594/594598.png") # Red X
+                    embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/256/594/594598.png")  # Red X
 
                     # Adding timestamp with the current date and time
                     now = datetime.datetime.now()
@@ -355,7 +355,7 @@ class Play(commands.Cog):
                 now = datetime.datetime.now()
                 embed.set_footer(text=f"Date : {now.strftime('%Y-%m-%d')}  ⬤  Time : {now.strftime('%H:%M %p')}")
 
-                await ctx.send(embed = embed)
+                await ctx.send(embed=embed)
                 return
             else:
                 embed = discord.Embed(
@@ -422,7 +422,7 @@ class Play(commands.Cog):
             now = datetime.datetime.now()
             embed.set_footer(text=f"Date : {now.strftime('%Y-%m-%d')}  ⬤  Time : {now.strftime('%H:%M %p')}")
 
-            await ctx.send(embed = embed)
+            await ctx.send(embed=embed)
             return
 
         try:
@@ -602,7 +602,6 @@ class Play(commands.Cog):
 
         await ctx.send("Left the voice channel. Queue has been cleared.")
 
-
     @commands.Cog.listener()
     async def on_voice_state_update(self, ctx, before, after):
         voice_state = ctx.guild.voice_client
@@ -616,7 +615,6 @@ class Play(commands.Cog):
             if voice_state.is_playing():
                 voice_state.stop()
             await voice_state.disconnect(force=True)
-
 
 
 async def setup(bot):
