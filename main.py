@@ -28,15 +28,6 @@ async def on_ready():
     #  GAMING
     await bot.change_presence(status=discord.Status.online, activity=discord.Game('in 1 server'))
 
-    #  LISTENING (ACTIVITY)
-    # await bot.change_presence(status=discord.Status.online,
-    #                           activity=discord.Activity(type=discord.ActivityType.listening,
-    #                                                     name = "!help"))
-
-    # STREAMING
-    # await bot.change_presence(status=discord.Status.online,
-    #                          activity=discord.Streaming(name="Minecraft", url='https://twitch.tv/'))
-
     print("--------------------------------")
     print("The bot is now ready for use!")
     print("--------------------------------")
