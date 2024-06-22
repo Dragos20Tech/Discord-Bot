@@ -35,11 +35,25 @@
 
 [![Banner](https://github.com/Dragos20Tech/Discord-Bot/assets/79509739/3089fb8c-12ff-4b73-84ee-9e6f52d2f8b5)](https://discord.com/api/oauth2/authorize?client_id=1161229265308749957&permissions=8&scope=bot)
 
+PS : I haven't deployed it. Check "Installation and Launch Guide"
+
+## Installation and Launch Guide
+
+1. Download and install [Git](https://git-scm.com/download/win).
+2. Download and install [Python](https://www.python.org/downloads/).
+3. Install the [packages](#packages).
+4. Clone this repo using : "git clone https://github.com/Dragos20Tech/Discord-Bot.git"
+5. Get to the [Discord Developer Portal](https://discord.com/developers/applications) and generate an API key of your own.
+6. Run the bot using an IDE like JetBrains PyCharm or VS Code or using the terminal : "python main.py"
+
+##
+
 ## Packages
 	 pip install discord.py
 	 pip install PyNaCl
 	 pip install ffmpeg
 	 pip install better-profanity
+
 ### Packages Description
 * discord.py is a Python library that provides an interface for interacting with the ***Discord API***. It allows developers to create Discord bots and applications, enabling communication and automation within the Discord platform.
   
