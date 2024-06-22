@@ -4,6 +4,7 @@
   * [Commands](#commands)
   * [Events](#events)
 * [Demo](#demo)
+* [Installation and Launch Guide](#installation-and-launch-guide)
 * [Packages](#packages)
   * [Packages Description](#packages-description)
 * [Ideas for improvement](#ideas-for-improvement)
